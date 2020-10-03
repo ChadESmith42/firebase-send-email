@@ -1,14 +1,8 @@
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
-const express = require('express');
-const bodyParser = require('body-parser');
 
 const email = functions.config().contactus.email;
 const password = functions.config().contactus.password;
-
-const app = express();
-app.use(bodyParser.json());
-
 
 const mailTransport = nodemailer.createTransport({
     service: 'gmail',
@@ -28,8 +22,10 @@ exports.contactUs = functions.https.onRequest(async (request, response) => {
 
     try {
         await mailTransport.sendMail(mailOptions);
+        console.log('Message was sent!');
         response.send(true);
     } catch (error) {
+        console.log('Message failed!', request, mailOptions);
         response.send(error);
     }
     response.end();

@@ -1,8 +1,14 @@
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const email = functions.config().gmail.email;
-const password = functions.config().gmail.password;
+const email = functions.config().contactus.email;
+const password = functions.config().contactus.password;
+
+const app = express();
+app.use(bodyParser.json());
+
 
 const mailTransport = nodemailer.createTransport({
     service: 'gmail',
@@ -28,13 +34,3 @@ exports.contactUs = functions.https.onRequest(async (request, response) => {
     }
     response.end();
 })
-
-
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
